@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Cube</title>
+		<style>
+			body { margin: 0; }
+		</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<script type="module" src="/main.js"></script>
+		<div class="button_container">
+			<div class="center">
+				<button id="red">U</button>
+				<button id="white">F</button>
+				<button id="blue">L</button>
+				<button id="orange">D</button>
+				<button id="yellow">B</button>
+				<button id="green">R</button>
+			</div>
+		</div>
+    </body>
+	<style>
+		.button_container {
+			display: flex;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			margin-bottom: 10px;
+		}
+		.center {
+			margin: 0 auto;
+		}
+		button {
+			border: none;
+			border-radius: 10px;
+			width: 45px;
+			height: 45px;
+			font-size: 15px;
+			margin: 5px;
+			touch-action: manipulation;
+			color: white;
+		}
+		button:hover {
+			opacity: 0.8;
+		}
+		button:active {
+			opacity: 0.6;
+		}
+		#red {
+			background: #b71c1c;
+		}
+		#white {
+			color: black;
+			background: #ffffff;
+		}
+		#blue {
+			background: #2979ff;
+		}
+		#orange {
+			background: #ff8000;
+		}
+		#yellow {
+			color: black;
+			background: #ffea00;
+		}
+		#green {
+			color: black;
+			background: #76ff03;
+		}
+	</style>
+</html>
