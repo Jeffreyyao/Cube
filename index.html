@@ -19,11 +19,20 @@
 				<button id="yellow">B</button>
 				<button id="green">R</button>
 			</div>
+			<div class="center">
+				<button id="redp">U'</button>
+				<button id="whitep">F'</button>
+				<button id="bluep">L'</button>
+				<button id="orangep">D'</button>
+				<button id="yellowp">B'</button>
+				<button id="greenp">R'</button>
+			</div>
 		</div>
     </body>
 	<style>
 		.button_container {
 			display: flex;
+			flex-direction: column;
 			position: fixed;
 			bottom: 0;
 			width: 100%;
@@ -48,24 +57,24 @@
 		button:active {
 			opacity: 0.6;
 		}
-		#red {
+		#red, #redp {
 			background: #b71c1c;
 		}
-		#white {
+		#white, #whitep {
 			color: black;
 			background: #ffffff;
 		}
-		#blue {
+		#blue, #bluep {
 			background: #2979ff;
 		}
-		#orange {
+		#orange, #orangep {
 			background: #ff8000;
 		}
-		#yellow {
+		#yellow, #yellowp {
 			color: black;
 			background: #ffea00;
 		}
-		#green {
+		#green, #greenp {
 			color: black;
 			background: #76ff03;
 		}

@@ -228,6 +228,9 @@ for (var idx in Object.keys(face_indices)) {
 	document.getElementById(face).onclick = (e) => {
 		rotate(face)
 	}
+	document.getElementById(face + 'p').onclick = (e) => {
+		rotate(face, true)
+	}
 }
 
 document.onkeydown = (e) => {
