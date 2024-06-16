@@ -171,22 +171,10 @@ var rotation_angle = 0 // degrees
 var rotation_axis = new THREE.Vector3(0, 0, 1)
 const rotation_increment = 10 // degrees
 
-function animate() {
-	if (rotation_angle === 0) {
-		rotation_lock = false
-	} else {
-		var angle_to_rotate = rotation_increment
-		if (Math.abs(rotation_angle) < rotation_increment) {
-			angle_to_rotate = rotation_angle
-		}
-		if (rotation_angle < 0) {
-			angle_to_rotate *= -1
-		}
-		rotation_angle -= angle_to_rotate
-		face_group.rotateOnAxis(rotation_axis, THREE.MathUtils.degToRad(angle_to_rotate))
-	}
-	requestAnimationFrame(animate)
-	renderer.render(scene, camera)
+var rotate_queue = []
+
+function rotate_enqueue(face, ccw=false) {
+	rotate_queue.push([face, ccw])
 }
 
 function rotate(face, ccw=false) {
@@ -223,35 +211,56 @@ function rotate(face, ccw=false) {
 	rotation_lock = true
 }
 
+function animate() {
+	if (rotation_angle === 0) {
+		rotation_lock = false
+		if (rotate_queue.length !== 0) {
+			rotate(...rotate_queue.shift())
+		}
+	} else {
+		var angle_to_rotate = rotation_increment
+		if (Math.abs(rotation_angle) < rotation_increment) {
+			angle_to_rotate = rotation_angle
+		}
+		if (rotation_angle < 0) {
+			angle_to_rotate *= -1
+		}
+		rotation_angle -= angle_to_rotate
+		face_group.rotateOnAxis(rotation_axis, THREE.MathUtils.degToRad(angle_to_rotate))
+	}
+	requestAnimationFrame(animate)
+	renderer.render(scene, camera)
+}
+
 for (var idx in Object.keys(face_indices)) {
 	const face = Object.keys(face_indices)[idx]
 	document.getElementById(face).onclick = (e) => {
-		rotate(face)
+		rotate_enqueue(face)
 	}
 	document.getElementById(face + 'p').onclick = (e) => {
-		rotate(face, true)
+		rotate_enqueue(face, true)
 	}
 }
 
 document.onkeydown = (e) => {
 	switch (e.code) {
 		case 'KeyR':
-			rotate('red')
+			rotate_enqueue('red')
 			break
 		case 'KeyW':
-			rotate('white')
+			rotate_enqueue('white')
 			break
 		case 'KeyB':
-			rotate('blue')
+			rotate_enqueue('blue')
 			break
 		case 'KeyO':
-			rotate('orange')
+			rotate_enqueue('orange')
 			break
 		case 'KeyY':
-			rotate('yellow')
+			rotate_enqueue('yellow')
 			break
 		case 'KeyG':
-			rotate('green')
+			rotate_enqueue('green')
 			break
 	}
 }
