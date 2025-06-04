@@ -171,9 +171,30 @@ var rotation_angle = 0 // degrees
 var rotation_axis = new THREE.Vector3(0, 0, 1)
 const rotation_increment = 10 // degrees
 
+var rotate_history = []
 var rotate_queue = []
 
+const face_to_action_map = {
+	'red': 'U',
+	'white': 'F',
+	'blue': 'L',
+	'orange': 'D',
+	'yellow': 'B',
+	'green': 'R',
+}
+
+const action_to_face_map = {
+	'U': 'red',
+	'F': 'white',
+	'L': 'blue',
+	'D': 'orange',
+	'B': 'yellow',
+	'R': 'green',
+}
+
 function rotate_enqueue(face, ccw=false) {
+	rotate_history.push(ccw ? face_to_action_map[face] + '\'' : face_to_action_map[face])
+	console.log(rotate_history)
 	rotate_queue.push([face, ccw])
 }
 
@@ -214,7 +235,7 @@ function rotate(face, ccw=false) {
 function animate() {
 	if (rotation_angle === 0) {
 		rotation_lock = false
-		if (rotate_queue.length !== 0) {
+		if (rotate_queue.length !== 0 && !rotation_lock) {
 			rotate(...rotate_queue.shift())
 		}
 	} else {
@@ -243,26 +264,62 @@ for (var idx in Object.keys(face_indices)) {
 }
 
 document.onkeydown = (e) => {
-	switch (e.code) {
-		case 'KeyR':
-			rotate_enqueue('red')
-			break
-		case 'KeyW':
-			rotate_enqueue('white')
-			break
-		case 'KeyB':
-			rotate_enqueue('blue')
-			break
-		case 'KeyO':
-			rotate_enqueue('orange')
-			break
-		case 'KeyY':
-			rotate_enqueue('yellow')
-			break
-		case 'KeyG':
-			rotate_enqueue('green')
-			break
+	// Ignore keyboard events if the move input is focused
+	if (document.getElementById('move-input') === document.activeElement) {
+		return
+	}
+	
+	console.log(e.code)
+	if (Object.keys(action_to_face_map).includes(e.code.replace('Key', ''))) {
+		const face = action_to_face_map[e.code.replace('Key', '')]
+		rotate_enqueue(face, e.shiftKey)
 	}
 }
 
 animate()
+
+const solver_url = 'https://just-martin-striking.ngrok-free.app'
+// const solver_url = 'http://100.73.53.128:1234'
+const solver_path = '/solve'
+
+document.getElementById('solve').onclick = async () => {
+	if (rotate_history.length === 0) {
+		return
+	}
+	const query = rotate_history.join(' ')
+	const url = `${solver_url}${solver_path}?query=${encodeURIComponent(query)}`
+	console.log(url)
+	try {
+		const response = await fetch(url)
+		const solution = await response.text()
+		document.getElementById('solution').textContent = solution
+	} catch (error) {
+		document.getElementById('solution').textContent = 'Error: Could not get solution'
+		console.error('Error fetching solution:', error)
+	}
+}
+
+document.getElementById('run-moves').onclick = () => {
+	const input = document.getElementById('move-input').value.trim()
+	if (!input) return
+
+	const moves = input.split(/\s+/)
+	for (const move of moves) {
+		// Handle moves like "R2", "U'", etc.
+		const baseMove = move[0]
+		const modifier = move.slice(1)
+		
+		if (Object.keys(action_to_face_map).includes(baseMove)) {
+			const face = action_to_face_map[baseMove]
+			const ccw = modifier === "'"
+			const count = modifier === "2" ? 2 : 1
+			
+			for (let i = 0; i < count; i++) {
+				rotate_enqueue(face, ccw)
+			}
+		}
+	}
+	
+	// Clear the input after processing
+	document.getElementById('move-input').value = ''
+}
