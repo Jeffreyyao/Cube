@@ -279,7 +279,6 @@ document.onkeydown = (e) => {
 animate()
 
 const solver_url = 'https://just-martin-striking.ngrok-free.app'
-// const solver_url = 'http://100.73.53.128:1234'
 const solver_path = '/solve'
 
 document.getElementById('solve').onclick = async () => {
