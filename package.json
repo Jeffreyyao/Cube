@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "sudo npx vite --port 80 --host"
+    "dev": "sudo npx vite --port 80 --host",
+    "build": "sudo npx vite build"
   },
   "dependencies": {
     "three": "^0.161.0"

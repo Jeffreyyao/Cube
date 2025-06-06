@@ -289,9 +289,15 @@ document.getElementById('solve').onclick = async () => {
 	const url = `${solver_url}${solver_path}?query=${encodeURIComponent(query)}`
 	console.log(url)
 	try {
-		const response = await fetch(url)
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: new Headers({
+				'ngrok-skip-browser-warning': '123456'
+			})
+		})
 		const solution = await response.text()
 		document.getElementById('solution').textContent = solution
+		document.getElementById('move-input').value = solution
 	} catch (error) {
 		document.getElementById('solution').textContent = 'Error: Could not get solution'
 		console.error('Error fetching solution:', error)
