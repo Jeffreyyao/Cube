@@ -285,6 +285,9 @@ document.getElementById('solve').onclick = async () => {
 	if (rotate_history.length === 0) {
 		return
 	}
+	const solveButton = document.getElementById('solve')
+	solveButton.classList.add('loading')
+	
 	const query = rotate_history.join(' ')
 	const url = `${solver_url}${solver_path}?query=${encodeURIComponent(query)}`
 	console.log(url)
@@ -301,6 +304,8 @@ document.getElementById('solve').onclick = async () => {
 	} catch (error) {
 		document.getElementById('solution').textContent = 'Error: Could not get solution'
 		console.error('Error fetching solution:', error)
+	} finally {
+		solveButton.classList.remove('loading')
 	}
 }
 
