@@ -12,11 +12,13 @@
 	<body>
 		<div class="top_container">
 			<div class="center input-group">
-				<button id="solve" class="solve-button">Solve</button>
 				<input type="text" id="move-input" placeholder="Enter moves (e.g. U R' F2)" />
 				<button id="run-moves" class="run-button">Run</button>
 			</div>
 			<div id="solution" class="solution-display"></div>
+			<div class="center">
+				<button id="solve" class="solve-button">Solve</button>
+			</div>
 		</div>
 		<div class="button_container">
 			<div class="center">
@@ -98,6 +100,7 @@
 			background: #4CAF50;
 			width: 100px;
 			height: 35px;
+			margin-top: 10px;
 		}
 		.input-group {
 			display: flex;
@@ -125,10 +128,21 @@
 		.solution-display {
 			text-align: center;
 			margin-top: 10px;
-			padding: 10px 50px 10px 50px;
+			padding: 0px 50px 0px 50px;
 			color: white;
 			font-family: monospace;
 			font-size: 16px;
+			min-width: 0;
+			width: fit-content;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.solution-row {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			margin-top: 10px;
 		}
 	</style>
 </html>
