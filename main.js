@@ -309,6 +309,29 @@ document.getElementById('solve').onclick = async () => {
 	}
 }
 
+document.getElementById('scramble').onclick = () => {
+	const moves = ['U', 'R', 'F', 'L', 'D', 'B']
+	const modifiers = ['', "'", '2']
+	const numMoves = 10
+	
+	// Clear existing moves
+	rotate_history = []
+	rotate_queue = []
+	
+	// Generate random moves
+	for (let i = 0; i < numMoves; i++) {
+		const move = moves[Math.floor(Math.random() * moves.length)]
+		const modifier = modifiers[Math.floor(Math.random() * modifiers.length)]
+		const face = action_to_face_map[move]
+		const ccw = modifier === "'"
+		const count = modifier === "2" ? 2 : 1
+		
+		for (let j = 0; j < count; j++) {
+			rotate_enqueue(face, ccw)
+		}
+	}
+}
+
 document.getElementById('run-moves').onclick = () => {
 	const input = document.getElementById('move-input').value.trim()
 	if (!input) return
